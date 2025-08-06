@@ -43,18 +43,21 @@ document.querySelectorAll('.timeline-item, .education-card, .skill-category').fo
     observer.observe(el);
 });
 
-// Form submission with EmailJS
-const form = document.querySelector('form');
-if (form) {
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        emailjs.sendForm('service_01r3j7u', 'template_mrvzuna', form)
-            .then(() => {
-                alert('Thank you! Your message has been sent.');
-                form.reset();
-            }, (error) => {
-                alert('Oops! Something went wrong: ' + error.text);
-            });
-    });
-}
+// Initialize EmailJS with your user ID
+emailjs.init('Cyber Tamarin');
+
+// Send form
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Generate a random contact number
+    this.contact_number.value = Math.random() * 100000 | 0;
+    
+    emailjs.sendForm('service_01r3j7u', 'template_mrvzuna', this)
+        .then(function() {
+            alert('Message sent successfully!');
+        }, function(error) {
+            alert('Failed to send message: ' + JSON.stringify(error));
+        });
+});
+
