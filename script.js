@@ -43,21 +43,39 @@ document.querySelectorAll('.timeline-item, .education-card, .skill-category').fo
     observer.observe(el);
 });
 
-// Initialize EmailJS with your user ID
-emailjs.init('Cyber Tamarin');
+// EmailJS Form Submission
+const contactForm = document.getElementById('contact-form');
+const successMessage = document.getElementById('success-message');
+const errorMessage = document.getElementById('error-message');
 
-// Send form
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Generate a random contact number
-    this.contact_number.value = Math.random() * 100000 | 0;
-    
-    emailjs.sendForm('service_01r3j7u', 'template_mrvzuna', this)
-        .then(function() {
-            alert('Message sent successfully!');
-        }, function(error) {
-            alert('Failed to send message: ' + JSON.stringify(error));
-        });
-});
-
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Generate a random contact number
+        this.contact_number.value = Math.random() * 100000 | 0;
+        
+        // Hide any previous messages
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
+        
+        emailjs.sendForm('service_01r3j7u', 'template_mrvzuna', this)
+            .then(function() {
+                // Show success message
+                successMessage.style.display = 'block';
+                // Reset form
+                contactForm.reset();
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            }, function(error) {
+                // Show error message
+                errorMessage.style.display = 'block';
+                // Hide error message after 5 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            });
+    });
+}
