@@ -43,12 +43,18 @@ document.querySelectorAll('.timeline-item, .education-card, .skill-category').fo
     observer.observe(el);
 });
 
-// Form submission
+// Form submission with EmailJS
 const form = document.querySelector('form');
 if (form) {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        alert('Thank you for your message! I will get back to you soon.');
-        form.reset();
+        
+        emailjs.sendForm('service_01r3j7u', 'template_mrvzuna', form)
+            .then(() => {
+                alert('Thank you! Your message has been sent.');
+                form.reset();
+            }, (error) => {
+                alert('Oops! Something went wrong: ' + error.text);
+            });
     });
 }
